@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Debamita Ghosh, Postdoctoral Research Fellow, Electrical and Computer Engineering, University of Central Florida. Research on robust reinforcement learning, bandits and learning for wireless networks.">
+<title>Debamita Ghosh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+/* Layout: sticky top tab bar; each tab shows one section (About, Research, Publications, ...).
+   Signature pieces: research split into two sectors with sub-themes, a year ledger for papers,
+   and a career page grouped into current position, education and experience. Light first, with a dark theme. */
+/* Terracotta palette. The site always opens in the light theme; the moon button switches to dark. */
+:root{
+  --paper:#F7F3EC; --panel:#FFFDF9; --panel-2:#EFE8DC; --rule:#DED5C6;
+  --ink:#2A211B; --ink-2:#4A3F36; --muted:#706458;
+  --accent:#974729; --accent-soft:#F3E2D8; --on-accent:#FFFFFF;
+  --c1:#974729; --c2:#5A598C; --c3:#39695F;
+  --gold:#775200; --gold-soft:#F1E6CB;
+  --font-display:"Spectral",Georgia,"Times New Roman",serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --paper:#17130F; --panel:#1F1A15; --panel-2:#28221B; --rule:#382F26;
+  --ink:#EFE8DF; --ink-2:#D2C8BC; --muted:#A0958A;
+  --accent:#E39A78; --accent-soft:#3A2419; --on-accent:#2A1209;
+  --c1:#E39A78; --c2:#ADAAE0; --c3:#86C2B8;
+  --gold:#E3BE6A; --gold-soft:#302816;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:90px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.65;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0;
+  -webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;margin:0;line-height:1.15;text-wrap:balance}
+p{margin:0}
+a{color:var(--accent);text-underline-offset:3px}
+a:hover{text-decoration-thickness:2px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+.mono{font-family:var(--font-mono)}
+.label{font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- frame: top tab bar, one section per tab ---------- */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--rule);
+  margin:0 calc(-1*max(16px,env(safe-area-inset-right,0px))) 0 calc(-1*max(16px,env(safe-area-inset-left,0px)));
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.topbar .inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:24px;min-height:64px}
+.who{font-family:var(--font-display);font-size:22px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.topbar nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;flex:1;min-width:0}
+.topbar nav::-webkit-scrollbar{display:none}
+.topbar nav a{position:relative;padding:21px 12px 19px;font-size:14.5px;color:var(--muted);text-decoration:none;white-space:nowrap}
+.topbar nav a:hover{color:var(--ink)}
+.topbar nav a[aria-current="page"]{color:var(--ink);font-weight:600}
+.topbar nav a[aria-current="page"]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:3px;background:var(--accent);border-radius:2px 2px 0 0}
+.tools-r{display:flex;gap:8px;flex:none}
+.ctl{font:inherit;font-size:13.5px;display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid var(--rule);background:var(--panel);color:var(--ink-2);border-radius:6px;cursor:pointer;text-decoration:none;width:fit-content}
+.ctl:hover{border-color:var(--accent);color:var(--accent)}
+.ctl svg{width:15px;height:15px;flex:none}
+.ctl.icon{padding:7px 9px}
+main{max-width:1080px;margin:0 auto;min-width:0;padding-block:44px 8px}
+section{padding:0}
+[hidden]{display:none!important}
+.sec-top{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-bottom:28px}
+.sec-top h2{font-size:clamp(30px,3.6vw,40px)}
+.sec-top p{color:var(--ink-2)}
+.pager{display:flex;justify-content:space-between;gap:16px;margin-top:56px;padding-top:18px;border-top:1px solid var(--rule)}
+.pager a{display:flex;flex-direction:column;gap:2px;text-decoration:none;color:var(--ink);font-family:var(--font-display);font-size:19px}
+.pager a small{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.pager a:hover{color:var(--accent)}
+.pager .next{margin-left:auto;text-align:right}
+
+/* ---------- hero ---------- */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:36px 52px;align-items:start}
+.hero h1{font-size:clamp(46px,6.2vw,78px);font-weight:400;letter-spacing:-.015em;margin-top:12px}
+.thesis{font-family:var(--font-display);font-size:clamp(21px,2.3vw,26px);line-height:1.38;color:var(--ink);margin-top:18px;max-width:30em}
+.thesis em{color:var(--accent);font-style:italic}
+.bio{margin-top:24px;color:var(--ink-2);max-width:40em;display:grid;gap:14px}
+.bio i{color:var(--ink)}
+.bio strong{color:var(--ink);font-weight:600}
+.vision{margin-top:32px;max-width:40em;padding:24px 26px 26px;background:var(--panel);border:1px solid var(--rule);border-top:4px solid var(--accent);border-radius:8px}
+.vision .label{color:var(--accent)}
+.vision h2{font-size:clamp(23px,2.4vw,27px);margin:8px 0 14px}
+.vision p{color:var(--ink-2);font-size:15.5px}
+.vision p+.chips{margin-top:10px}
+.vision .chips+p{margin-top:18px}
+.chips{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:7px}
+.chips li{font-size:13.5px;line-height:1.3;padding:5px 11px;border:1px solid var(--rule);border-radius:999px;color:var(--ink-2);background:var(--paper)}
+.chips.key li{border-color:transparent;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.question{grid-column:1/-1;margin:0;padding:28px 34px 30px;background:var(--accent-soft);border-radius:8px;position:relative;overflow:hidden}
+.question::before{content:"\201C";position:absolute;right:22px;top:-28px;font-family:var(--font-display);font-size:180px;line-height:1;color:var(--accent);opacity:.16;pointer-events:none}
+.question .label{color:var(--accent)}
+.question blockquote{margin:10px 0 0;max-width:46em;font-family:var(--font-display);font-style:italic;font-size:clamp(21px,2.4vw,28px);line-height:1.38;color:var(--ink);text-wrap:pretty}
+.side{display:grid;gap:18px}
+.reach{padding:20px 20px 18px;background:var(--panel);border:1px solid var(--rule);border-radius:8px}
+.reach h2{font-size:22px}
+.reach>p{margin-top:6px;font-size:14.5px;line-height:1.5;color:var(--ink-2)}
+.reach .open{display:flex;gap:10px;align-items:flex-start;margin-top:14px;padding:10px 12px;border-radius:6px;background:var(--accent-soft);color:var(--ink);font-size:14px;line-height:1.45}
+.reach .open i{flex:none;width:8px;height:8px;margin-top:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 25%,transparent)}
+.reach .open strong{font-weight:600;color:var(--accent)}
+.mails{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px}
+.mails .label{font-size:11px}
+.mails .row{display:flex;align-items:center;gap:6px;margin-top:2px}
+.mails a{font-size:14.5px;overflow-wrap:anywhere;min-width:0;flex:1}
+.mails .ctl{padding:5px 7px}
+.mails .ctl svg{width:14px;height:14px}
+.links{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px solid var(--rule);display:grid;gap:4px}
+.links a{display:flex;align-items:center;gap:10px;padding:6px 0;font-size:14.5px;color:var(--ink);text-decoration:none}
+.links a:hover{color:var(--accent)}
+.links svg{width:17px;height:17px;flex:none;color:var(--accent)}
+.links .go{margin-left:auto;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.portrait{margin:0}
+.portrait img{display:block;width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;object-position:50% 14%;border-radius:4px;background:var(--panel-2);filter:saturate(.95)}
+.portrait figcaption{display:flex;justify-content:space-between;margin-top:10px;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+.facts{display:grid;border-block:1px solid var(--rule)}
+.fact{display:flex;align-items:baseline;gap:14px;padding:13px 0}
+.fact+.fact{border-top:1px solid var(--rule)}
+.fact b{flex:none;min-width:1.5em;font-family:var(--font-display);font-size:30px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.fact span{font-size:13.5px;color:var(--muted);line-height:1.4}
+
+/* ---------- research sectors ---------- */
+.sectors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.sector{display:flex;flex-direction:column;padding:24px 26px 22px;background:var(--panel);border:1px solid var(--rule);border-radius:8px;border-top:4px solid var(--c)}
+.sector .k{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--c)}
+.sector h3{font-size:27px;margin-top:6px}
+.sector .blurb{margin-top:10px;font-size:15px;color:var(--ink-2);line-height:1.55}
+.theme{margin-top:22px;padding-top:18px;border-top:1px solid var(--rule)}
+.theme h4{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:0;font-family:var(--font-display);font-size:19px;font-weight:500;line-height:1.25}
+.theme h4 span{font-family:var(--font-mono);font-size:12px;color:var(--muted);font-weight:400}
+.theme p{margin-top:6px;font-size:14px;color:var(--muted);line-height:1.5}
+.theme ol{margin:12px 0 0;padding:0;list-style:none;display:grid;gap:9px}
+.theme li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:12px;align-items:baseline;font-size:14.5px;line-height:1.45}
+.theme li .v{font-family:var(--font-mono);font-size:11.5px;color:var(--c)}
+.theme li a{color:var(--ink)}
+.theme li a:hover{color:var(--accent)}
+.sector .all{margin-top:22px;align-self:flex-start;font:inherit;font-size:14px;font-weight:600;color:var(--c);background:none;border:0;padding:0;cursor:pointer}
+.sector .all:hover{text-decoration:underline}
+
+/* ---------- publications ledger ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:8px}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:6px;overflow:hidden;background:var(--panel)}
+.seg button{font:inherit;font-size:13.5px;padding:7px 13px;border:0;background:none;color:var(--ink-2);cursor:pointer}
+.seg button+button{border-left:1px solid var(--rule)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.dots{display:flex;flex-wrap:wrap;gap:6px}
+.dotf{font:inherit;font-size:13.5px;display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border:1px solid var(--rule);border-radius:6px;background:var(--panel);color:var(--ink-2);cursor:pointer}
+.dotf i{width:9px;height:9px;border-radius:50%;background:var(--c,var(--muted))}
+.dotf[data-d="1"]{--c:var(--c1)}.dotf[data-d="2"]{--c:var(--c3)}
+.dotf[aria-pressed="true"]{border-color:var(--c,var(--ink));box-shadow:inset 0 0 0 1px var(--c,var(--ink));color:var(--ink)}
+.count{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);margin:10px 0 6px}
+.ledger{border-top:2px solid var(--ink)}
+.yr-row{display:grid;grid-template-columns:96px minmax(0,1fr);gap:24px;border-bottom:1px solid var(--rule)}
+.yr-row .yr{font-family:var(--font-display);font-size:34px;line-height:1;padding-top:20px;color:var(--ink);font-variant-numeric:tabular-nums}
+.yr-row .yr small{display:block;font-family:var(--font-mono);font-size:11.5px;color:var(--muted);margin-top:8px}
+.entry{padding:20px 0;display:grid;grid-template-columns:12px minmax(0,1fr);gap:14px}
+.entry+.entry{border-top:1px dashed var(--rule)}
+.entry .bar{width:4px;border-radius:2px;background:linear-gradient(var(--a,var(--muted)) 0 50%,var(--b,var(--a,var(--muted))) 50% 100%);margin-top:5px;height:calc(100% - 8px)}
+.entry .v{font-family:var(--font-mono);font-size:12px;letter-spacing:.04em;color:var(--muted)}
+.entry .v b{color:var(--ink);font-weight:500}
+.entry h3{font-size:20px;line-height:1.3;margin-top:4px;text-wrap:pretty}
+.entry h3 a{color:var(--ink);text-decoration:none}
+.entry h3 a:hover{color:var(--accent);text-decoration:underline}
+.entry .au{font-size:14.5px;color:var(--muted);margin-top:4px}
+.entry .au b{color:var(--ink);font-weight:600}
+.entry .award{display:inline-block;margin-top:8px;font-size:13px;font-weight:600;color:var(--gold);background:var(--gold-soft);padding:2px 9px;border-radius:4px}
+.acts{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:10px}
+.act{font:inherit;font-size:13.5px;font-weight:600;color:var(--accent);background:none;border:0;padding:0;cursor:pointer;text-decoration:none}
+.act:hover{text-decoration:underline}
+.abs{margin-top:10px;padding:12px 16px;border-left:2px solid var(--accent);background:var(--panel-2);font-size:14.5px;line-height:1.6;color:var(--ink-2)}
+.abs sub,.abs sup{font-size:.75em;line-height:0}
+.empty{padding:28px 0;color:var(--muted)}
+
+/* ---------- career: current position, then education and experience side by side ---------- */
+.now-card{padding:24px 26px;background:var(--panel);border:1px solid var(--rule);border-left:4px solid var(--accent);border-radius:8px}
+.now-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px 16px;margin-top:6px}
+.now-card h3{font-size:26px}
+.now-card .when{font-family:var(--font-mono);font-size:12.5px;color:var(--accent)}
+.now-card .org{margin-top:4px;color:var(--ink-2)}
+.now-card p+p{margin-top:10px;font-size:15px;color:var(--ink-2)}
+.cv-cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:48px;margin-top:40px}
+.col-h{display:flex;align-items:center;gap:10px;font-size:22px;margin-bottom:10px}
+.col-h i{width:10px;height:10px;border-radius:50%;background:var(--c)}
+.cv-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule)}
+.cv-list li{display:grid;grid-template-columns:92px minmax(0,1fr);gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);font-size:15px;line-height:1.5}
+.cv-list .when{font-family:var(--font-mono);font-size:12px;color:var(--muted);padding-top:3px}
+.cv-list b{display:block;font-weight:600;color:var(--ink)}
+.cv-list .where{display:block;color:var(--ink-2)}
+.cv-list small{display:block;margin-top:3px;font-size:13.5px;color:var(--muted)}
+.cv-list .th{margin-top:8px;font-family:var(--font-display);font-style:italic;font-size:16.5px;line-height:1.4;color:var(--ink)}
+.cv-list .tag{display:inline-block;margin-top:8px;padding:3px 9px;border-radius:4px;font-size:12.5px;background:var(--gold-soft);color:var(--gold)}
+.cv-list .tag{font-weight:600}
+.courses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin-top:44px}
+.courses h3{font-size:20px;margin-bottom:8px;grid-column:1/-1}
+.course{display:grid;grid-template-columns:128px minmax(0,1fr);gap:12px;padding:10px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.course .c{font-family:var(--font-mono);font-size:12px;color:var(--c3);padding-top:2px}
+
+/* ---------- recognition ---------- */
+.prizes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+/* each card spans two shared rows (label, award name) so the names line up across cards */
+.prize{display:grid;grid-row:span 2;grid-template-rows:subgrid;row-gap:12px;align-content:start;padding:26px 28px 28px;background:var(--gold-soft);border-radius:8px}
+.prize .y{font-family:var(--font-mono);font-size:12.5px;font-weight:600;line-height:1.55;color:var(--gold)}
+.prize h3{font-size:24px;align-self:start}
+.list{list-style:none;margin:22px 0 0;padding:0;border-top:1px solid var(--rule)}
+.list li{display:grid;grid-template-columns:110px minmax(0,1fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.list .y{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);padding-top:2px}
+.list b{font-weight:600}
+.list small{display:block;color:var(--muted);font-size:13.5px;line-height:1.5}
+
+/* ---------- talks & service ---------- */
+.cols{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px}
+.cols h3{font-size:22px;margin-bottom:4px}
+.list.talks em{font-family:var(--font-display);font-size:17px}
+.svc{display:grid;gap:30px;align-content:start}
+.svc ul{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;font-size:15px;color:var(--ink-2)}
+.svc li::before{content:"› ";color:var(--accent);font-family:var(--font-mono)}
+
+footer.site-foot{max-width:1080px;margin:0 auto;padding-block:28px 40px;font-family:var(--font-mono);font-size:12px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translate(-50%,16px);background:var(--ink);color:var(--paper);padding:9px 16px;border-radius:6px;font-size:14px;opacity:0;pointer-events:none;transition:.2s;z-index:40}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* ---------- narrow screens ---------- */
+@media (max-width:860px){
+  .topbar .inner{flex-wrap:wrap;gap:0 12px;min-height:0;padding-top:10px}
+  .who{flex:1;font-size:20px}
+  .topbar nav{order:3;flex-basis:100%;gap:18px}
+  .topbar nav a{padding:10px 0 11px}
+  .topbar nav a[aria-current="page"]::after{left:0;right:0}
+  .ctl.mail-text{display:none}
+  main{padding-top:28px}
+  .hero{grid-template-columns:minmax(0,1fr);gap:28px}
+  .side{display:contents}
+  .portrait{width:170px;order:-1}
+  .portrait figcaption{display:none}
+  .reach,.facts{order:1}
+  .vision{padding:20px 18px 22px}
+  .question{padding:22px 20px 24px}
+  .fact b{font-size:28px}
+  .sectors,.prizes,.cols,.courses{grid-template-columns:minmax(0,1fr)}
+  .cv-cols{grid-template-columns:minmax(0,1fr);gap:32px}
+  .cv-list li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .now-card{padding:20px 18px}
+  .sector{padding:20px 18px 18px}
+  .theme li{grid-template-columns:minmax(0,1fr);gap:0}
+  .yr-row{grid-template-columns:minmax(0,1fr);gap:0}
+  .yr-row .yr{font-size:26px;padding-top:18px}
+  .yr-row .yr small{display:inline;margin-left:10px}
+  .list li{grid-template-columns:minmax(0,1fr);gap:2px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="inner">
+    <a class="who" href="#about">Debamita Ghosh</a>
+    <nav id="nav" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#career">Career</a>
+      <a href="#recognition">Recognition</a>
+      <a href="#talks">Talks &amp; service</a>
+    </nav>
+    <div class="tools-r">
+      <button class="ctl" type="button" data-copy-mail aria-label="Copy email address"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg><span class="mail-text">Copy email</span></button>
+      <button class="ctl icon" type="button" data-theme-toggle aria-label="Switch colour theme" title="Switch colour theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+    </div>
+  </div>
+</header>
+
+<main>
+    <section id="about">
+      <div class="hero">
+        <div>
+          <div class="label">Postdoctoral Research Fellow · Electrical &amp; Computer Engineering · UCF</div>
+          <h1>Debamita Ghosh</h1>
+          <p class="thesis">I develop learning algorithms that make reliable decisions from limited information—and <em>continue to do so</em> as environments change, uncertainties arise, and challenges evolve.</p>
+          <div class="bio">
+            <p>I am a Postdoctoral Researcher in the Department of Electrical and Computer Engineering at the University of Central Florida, working with <a href="https://www.ece.ucf.edu/person/george-atia/" target="_blank" rel="noopener">Prof. George K. Atia</a> and <a href="https://www.ece.ucf.edu/person/yue-wang/" target="_blank" rel="noopener">Prof. Yue Wang</a>. My research is motivated by the <i>sim-to-real gap</i>, where discrepancies between training environments and real-world conditions challenge the reliability of autonomous decision-making systems. To address this gap, I develop mathematical foundations and efficient algorithms for <strong>online distributionally robust sequential decision-making</strong>, spanning single-agent and multi-agent reinforcement learning. My work brings together reinforcement learning, online learning, optimization, and game theory to design theoretically grounded, sample-efficient, and scalable algorithms with provable guarantees under model misspecification, limited data, and strategic uncertainty.</p>
+            <p>Prior to joining UCF, I completed my Ph.D. at IIT Bombay through the IITB–Monash Research Academy, under the supervision of <a href="https://www.ieor.iitb.ac.in/mhanawal" target="_blank" rel="noopener">Prof. Manjesh Kr. Hanawal</a> and <a href="https://innopolis.university/en/professor/nikola-zlatanov/" target="_blank" rel="noopener">Prof. Nikola Zlatanov</a>. My doctoral research focused on sample-efficient online learning for beam alignment and beamforming under uncertain wireless channels and resource constraints, earning the Naik and Rastogi Best PhD Thesis Award and the Coromandel International Best PhD Thesis Award. Building on these foundations, my current research extends beyond wireless systems to address fundamental challenges in learning, exploration, and coordination under model misspecification and strategic uncertainty. This progression reflects a unifying theme throughout my work: enabling reliable decision-making from limited and imperfect information.</p>
+          </div>
+          <div class="vision">
+            <div class="label">Research vision</div>
+            <h2>Advancing the foundations of Trustworthy Autonomous Intelligence</h2>
+            <p>My long-term goal is a unified theoretical and algorithmic framework in which autonomous agents learn, adapt, and collaborate, with rigorous guarantees on</p>
+            <ul class="chips key"><li>Robustness</li><li>Reliability</li><li>Scalability</li><li>Generalization</li></ul>
+            <p>To build it, I bring together ideas from</p>
+            <ul class="chips"><li>Reinforcement learning</li><li>Online learning</li><li>Statistical learning theory</li><li>Optimization</li><li>Game theory</li></ul>
+          </div>
+        </div>
+        <aside class="side">
+          <figure class="portrait">
+            <img src="photo.jpg" alt="Portrait of Debamita Ghosh" width="560" height="700">
+            <figcaption><span>Orlando, Florida</span><span>2026</span></figcaption>
+          </figure>
+          <div class="reach">
+            <h2>Let’s connect</h2>
+            <p>I welcome new ideas, interdisciplinary discussions, and meaningful research collaborations with researchers, academic institutions, and industry professionals. Feel free to reach out!</p>
+            <p class="open"><i aria-hidden="true"></i><span>Exploring <strong>full-time faculty appointments</strong> and <strong>industry research positions</strong></span></p>
+            <ul class="mails">
+              <li><span class="label">UCF</span><div class="row"><a href="mailto:debamita.ghosh@ucf.edu">debamita.ghosh@ucf.edu</a><button class="ctl icon" type="button" data-copy="debamita.ghosh@ucf.edu" aria-label="Copy UCF email" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div></li>
+              <li><span class="label">Gmail</span><div class="row"><a href="mailto:debamita060788@gmail.com">debamita060788@gmail.com</a><button class="ctl icon" type="button" data-copy="debamita060788@gmail.com" aria-label="Copy Gmail address" title="Copy"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button></div></li>
+            </ul>
+            <ul class="links">
+              <li><a href="https://scholar.google.com/citations?user=lnEnqvkAAAAJ&amp;hl=en" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 10 12 5 2 10l10 5 10-5z"/><path d="M6 12v5c3 2 9 2 12 0v-5"/></svg>Google Scholar<span class="go">↗</span></a></li>
+              <li><a href="https://www.linkedin.com/in/debamita-ghosh-694358119/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8 10v7M8 7v.01M12 17v-4a2 2 0 0 1 4 0v4M12 10v7"/></svg>LinkedIn<span class="go">↗</span></a></li>
+              <li><a href="Debamita_Ghosh_CV.pdf" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Curriculum vitae<span class="go">PDF</span></a></li>
+            </ul>
+          </div>
+          <div class="facts" id="facts"></div>
+        </aside>
+        <figure class="question">
+          <figcaption class="label">The central question</figcaption>
+          <blockquote>How can we build autonomous systems that learn efficiently from limited information, make reliable decisions under uncertainty, and scale to increasingly complex and dynamic environments?</blockquote>
+        </figure>
+      </div>
+    </section>
+
+    <section id="research">
+      <div class="sec-top">
+        <h2>Learning to decide, when every trial counts</h2>
+        <p>My research develops theoretically grounded, sample-efficient algorithms for reliable decision-making under uncertainty, spanning sequential learning, exploration, multi-agent coordination, and wireless communication systems with limited feedback and resources.</p>
+      </div>
+      <div class="sectors" id="sectors"></div>
+    </section>
+
+    <section id="publications">
+      <div class="sec-top">
+        <h2>From questions to contributions</h2>
+        <p>Exploring sequential decision-making and wireless communications through theoretical advances, efficient learning algorithms, and practical applications.</p>
+      </div>
+      <div class="filters">
+        <div class="seg" id="typeSeg" role="group" aria-label="Publication type">
+          <button type="button" data-v="all" aria-pressed="true">All</button>
+          <button type="button" data-v="conference" aria-pressed="false">Conference</button>
+          <button type="button" data-v="journal" aria-pressed="false">Journal</button>
+        </div>
+        <div class="dots" id="dirFilter" role="group" aria-label="Research direction"></div>
+      </div>
+      <div class="count" id="count" aria-live="polite"></div>
+      <div class="ledger" id="ledger"></div>
+    </section>
+
+    <section id="career">
+      <div class="sec-top">
+        <h2>The path that shaped my research</h2>
+      </div>
+      <article class="now-card">
+        <div class="label">Current position</div>
+        <div class="now-head"><h3>Postdoctoral Research Fellow</h3><span class="when">2025 – present</span></div>
+        <p class="org">Department of Electrical and Computer Engineering, University of Central Florida</p>
+        <p>Working with <a href="https://www.ece.ucf.edu/person/george-atia/" target="_blank" rel="noopener">Prof. George K. Atia</a> and <a href="https://www.ece.ucf.edu/person/yue-wang/" target="_blank" rel="noopener">Prof. Yue Wang</a> on distributionally robust and multi-agent reinforcement learning.</p>
+      </article>
+      <div class="cv-cols">
+        <div>
+          <h3 class="col-h" style="--c:var(--c2)"><i></i>Education</h3>
+          <ol class="cv-list">
+            <li><span class="when">2019 – 2025</span><div>
+              <b>Ph.D.</b><span class="where">IITB–Monash Research Academy, IIT Bombay</span>
+              <small>Department of Industrial Engineering and Operations Research</small>
+              <p class="th">Thesis: Online Algorithms for Efficient Beamforming in Next-Generation Wireless Networks</p>
+              <small>Supervisors: <a href="https://www.ieor.iitb.ac.in/mhanawal" target="_blank" rel="noopener">Prof. Manjesh Kr. Hanawal</a> and <a href="https://innopolis.university/en/professor/nikola-zlatanov/" target="_blank" rel="noopener">Prof. Nikola Zlatanov</a></small>
+              <span class="tag">Two Best PhD Thesis awards</span></div></li>
+            <li><span class="when">2010 – 2012</span><div>
+              <b>Master's in Statistics</b><span class="where">Indian Institute of Technology Kanpur</span>
+              <small>Department of Mathematics &amp; Statistics</small></div></li>
+            <li><span class="when">2006 – 2010</span><div>
+              <b>Bachelor's in Statistics</b><span class="where">St. Xavier's College (Autonomous), Kolkata</span>
+              <small>Department of Statistics</small></div></li>
+          </ol>
+        </div>
+        <div>
+          <h3 class="col-h" style="--c:var(--c3)"><i></i>Academic experience</h3>
+          <ol class="cv-list">
+            <li><span class="when">2019 – 2025</span><div>
+              <b>Teaching Assistant</b><span class="where">Indian Institute of Technology Bombay</span>
+              <small>Department of Industrial Engineering and Operations Research</small></div></li>
+            <li><span class="when">2016 – 2019</span><div>
+              <b>Assistant Professor (Grade I)</b><span class="where">Amity University, Kolkata</span>
+              <small>Amity Institute of Applied Science</small></div></li>
+            <li><span class="when">2015 – 2016</span><div>
+              <b>Assistant Professor</b><span class="where">Techno India Agartala (TIA), West Tripura</span>
+              <small>Department of Basic Sciences (Mathematics)</small></div></li>
+            <li><span class="when">2014 – 2015</span><div>
+              <b>Assistant Professor</b><span class="where">Netaji Subhash Engineering College (NSEC), Kolkata</span>
+              <small>Department of Basic Engineering Science (Mathematics)</small></div></li>
+            <li><span class="when">2012 – 2013</span><div>
+              <b>Guest Lecturer</b><span class="where">Asutosh College, Kolkata</span>
+              <small>Department of Statistics</small></div></li>
+            <li><span class="when">2011</span><div>
+              <b>Research Intern</b><span class="where">Indian Statistical Institute, Kolkata</span>
+              <small>Forecasting the purchasing power of Indian districts with regression and extrapolation</small></div></li>
+          </ol>
+        </div>
+      </div>
+      <div class="courses">
+        <h3>Courses taught and assisted</h3>
+        <div class="course"><span class="c">IIT Bombay</span><span>Online Machine Learning and Bandit Algorithms; Engineering Statistics</span></div>
+        <div class="course"><span class="c">NPTEL</span><span>Bandit Algorithms; Introduction to Stochastic Processes; Engineering Statistics</span></div>
+        <div class="course"><span class="c">Amity &amp; Asutosh</span><span>Multivariate Analysis; Statistical Inference; Regression Analysis</span></div>
+        <div class="course"><span class="c">TIA &amp; NSEC</span><span>Engineering Statistics</span></div>
+      </div>
+    </section>
+
+    <section id="recognition">
+      <div class="sec-top">
+        <h2>Milestones along the way</h2>
+      </div>
+      <div class="prizes" id="prizes"></div>
+      <ul class="list" id="awardList"></ul>
+    </section>
+
+    <section id="talks">
+      <div class="sec-top">
+        <h2>Where my research meets its audience</h2>
+      </div>
+      <div class="cols">
+        <div>
+          <h3>Conference talks</h3>
+          <ul class="list talks" id="talkList"></ul>
+          <h3 style="margin-top:30px">Workshops</h3>
+          <ul class="list talks" id="wsList"></ul>
+        </div>
+        <div class="svc">
+          <div>
+            <h3>Journal reviewer</h3>
+            <ul>
+              <li>Journal of Machine Learning Research</li>
+              <li>IEEE Transactions on Signal Processing</li>
+              <li>IEEE Transactions on Networking</li>
+              <li>IEEE Transactions on Machine Learning in Communications and Networking</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Conference reviewer</h3>
+            <ul>
+              <li>International Conference on Machine Learning (ICML)</li>
+              <li>International Conference on Learning Representations (ICLR)</li>
+              <li>Neural Information Processing Systems (NeurIPS)</li>
+              <li>Uncertainty in Artificial Intelligence (UAI)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+<footer class="site-foot">© <span id="yr">2026</span> Debamita Ghosh</footer>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ---------- data ---------- */
+const ME="Ghosh, D.";
+/* two research sectors; c is the colour token number, subs are the sub-themes papers point to with s */
+const DIRS={
+  1:{name:"Sequential decision-making",short:"Sequential decision-making",c:1,
+     blurb:"Theory and algorithms for agents that learn by acting: how to explore efficiently, how to stay reliable when the model is wrong, and how to coordinate with other agents.",
+     subs:[
+       {k:"rl",name:"Robust Reinforcement Learning",
+        blurb:"Online reinforcement learning that stays reliable when the deployed environment differs from the one the agent learned in, for single agents, teams of agents, and alignment under uncertain preferences."},
+       {k:"bandit",name:"Structured bandits",
+        blurb:"Finding the best option within a fixed budget of trials by exploiting structure such as unimodality, in both frequentist and Bayesian settings."}]},
+  2:{name:"Learning for wireless networks",short:"Wireless networks",c:3,
+     blurb:"Applying online learning and optimization to wireless communication systems, where uncertain channel conditions, limited measurements, and resource constraints demand efficient and adaptive decision-making.",
+     subs:[
+       {k:"beam",name:"Beam alignment and beamforming",
+        blurb:"Learning the best beam or phase configuration for mmWave links and holographic metasurface transceivers from a small number of measurements."},
+       {k:"energy",name:"Energy-harvesting networks",
+        blurb:"Learning to use harvested energy efficiently, and to share it fairly, in wireless sensor networks."}]}
+};
+const PUBS=[
+ {t:"conference",y:2026,au:["Ghosh, D.","Atia, G.K.","Wang, Y."],ti:"Online Robust Reinforcement Learning with General Function Approximation",
+  ven:"Proceedings of the 43rd International Conference on Machine Learning (ICML)",short:"ICML 2026",det:"arXiv:2512.18957",
+  url:"https://arxiv.org/pdf/2512.18957",d:[1],s:"rl",
+  ab:"In many real-world settings, reinforcement learning systems suffer performance degradation when the environment encountered at deployment differs from that observed during training. Distributionally robust reinforcement learning (DR-RL) mitigates this issue by seeking policies that maximize performance under the most adverse transition dynamics within a prescribed uncertainty set. Most existing DR-RL approaches, however, rely on strong data availability assumptions, such as access to a generative model or large offline datasets, and are largely restricted to tabular settings. In this work, we propose a fully online DR-RL algorithm with general function approximation that learns robust policies solely through interaction, without requiring prior knowledge or pre-collected data. Our approach is based on a dual-driven fitted robust Bellman procedure that simultaneously estimates the value function and the corresponding worst-case backup operator. We establish regret guarantees for online DR-RL characterized by an intrinsic complexity notion, the robust Bellman-Eluder dimension, covering a broad class of phi-divergence uncertainty sets. The resulting regret bounds are sublinear, do not scale with the size of the state or action spaces, and specialize to tight rates in structured problem classes, demonstrating the practicality and scalability of our framework."},
+ {t:"conference",y:2026,au:["Ahmed, S.","Ghosh, D.","Tang, D.","Wang, Y.","Velasquez, A.","Wang, Y."],ti:"Robust Nash Alignment under Preference Uncertainty",
+  ven:"Advances in Neural Information Processing Systems (NeurIPS)",short:"NeurIPS 2026",det:"arXiv:2610.00715",
+  url:"https://arxiv.org/pdf/2610.00715",d:[1],s:"rl",
+  ab:"Preference-based alignment methods typically optimize against a single preference model, and can therefore be brittle when pairwise preferences are uncertain: noisy, heterogeneous, or shift after deployment. To address these issues, we propose Robust Nash Alignment, a game-theoretic framework for alignment to uncertain pairwise preferences. Our formulation has a major learner seeking a policy with a large worst-case win rate against both an adversarial competitor and any preference kernel lying in an ambiguity set around a nominal preference. When the ambiguity set captures the uncertainty in preferences, the resulting robust objective of the game directly yields a certified lower bound on worst-case performance. However, we note this problem is computationally challenging to optimize, and to address this, we introduce a four-player primal-dual proxy game involving the leader policy, follower policy, adversarial kernel, and dual variable, and develop a single-loop optimistic mirror descent-ascent algorithm for it. We show that the proxy always lower-bounds the truncated hard-constrained objective, quantify the proxy-to-hard gap, and characterize an exactness condition under which the proxy recovers the robust objective. We then prove an <i>O</i>(1/√<i>T</i>) average-iteration convergence for the proxy-game duality gap, which implies a near-optimal robust policy for the original robust objective. Experiments on controlled tabular games and LLM alignment with uncertain preference illustrate the method and show improved robustness to preference perturbations over nominal baselines."},
+ {t:"conference",y:2026,au:["Farhat, Z.U.","Ghosh, D.","Atia, G.","Wang, Y."],ti:"Sample-efficient distributionally robust multi-agent reinforcement learning via online interaction",
+  ven:"International Conference on Learning Representations (ICLR)",short:"ICLR 2026",det:"Vol. 2026, pp. 151781–151838",
+  url:"https://openreview.net/forum?id=hIBMCDOwMI",d:[1],s:"rl",
+  ab:"Well-trained multi-agent systems can fail when deployed in real-world environments due to model mismatches between the training and deployment environments, caused by environment uncertainties including noise or adversarial attacks. Distributionally Robust Markov Games (DRMGs) enhance system resilience by optimizing for worst-case performance over a defined set of environmental uncertainties. However, current methods are limited by their dependence on simulators or large offline datasets, which are often unavailable. This paper pioneers the study of online learning in DRMGs, where agents learn directly from environmental interactions without prior data. We introduce the Multiplayer Optimistic Robust Nash Value Iteration (MORNAVI) algorithm and provide the first provable guarantees for this setting. Our theoretical analysis demonstrates that the algorithm achieves low regret and efficiently finds the optimal robust policy for uncertainty sets measured by Total Variation divergence and Kullback-Leibler divergence. These results establish a new, practical path toward developing truly robust multi-agent systems."},
+ {t:"conference",y:2026,au:["Ghosh, D.","Atia, G.K.","Wang, Y."],ti:"ORVIT: Near-Optimal Online Distributionally Robust Reinforcement Learning",
+  ven:"Proceedings of the AAAI Conference on Artificial Intelligence (AAAI)",short:"AAAI 2026",det:"Vol. 40, No. 25, pp. 21278–21286",
+  url:"https://ojs.aaai.org/index.php/AAAI/article/view/39273",d:[1],s:"rl",
+  ab:"We investigate reinforcement learning (RL) in the presence of distributional mismatch between training and deployment, where policies trained in simulators often underperform in practice due to mismatches between training and deployment conditions, and thereby reliable guarantees on real-world performance are essential. Distributionally robust RL addresses this issue by optimizing worst-case performance over an uncertainty set of environments and providing an optimized lower bound on deployment performance. However, existing studies typically assume access to either a generative model or offline datasets with broad coverage of the deployment environment—assumptions that limit their practicality in unknown environments without prior knowledge. In this work, we study a more practical and challenging setting: online distributionally robust RL, where the agent interacts only with a single unknown training environment while seeking policies that are robust with respect to an uncertainty set around this nominal model. We consider general <i>f</i>-divergence-based ambiguity sets, including χ<sup>2</sup> and KL divergence balls, and design a computationally efficient algorithm that achieves sublinear regret for the robust control objective under minimal assumptions, without requiring generative or offline data access. Moreover, we establish a corresponding minimax lower bound on the regret of any online algorithm, demonstrating the near-optimality of our method. Experiments across diverse environments with model misspecification show that our approach consistently improves worst-case performance and aligns with the theoretical guarantees."},
+ {t:"conference",y:2026,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"MBT: Multi-Beam Strategy for Best Transmit Beamforming in mmWave Communications",
+  ven:"2026 18th International Conference on COMmunication Systems and NETworks (COMSNETS)",short:"COMSNETS 2026",det:"pp. 147–155. IEEE",
+  url:"https://ieeexplore.ieee.org/abstract/document/11418275",d:[2],s:"beam",
+  ab:"Beamforming is pivotal for harnessing high data rates in millimeter wave (mmWave) multiple-input-single-output (MISO) systems. We present a learning algorithm, Multi-beam for Best Transmit Beamforming (MBT), that identifies the beam with the highest received signal strength at the user equipment. MBT uses the fixed-budget best arm identification (BAI) framework, where an optimal beam is learned by exploring the beams within a fixed number of time slots or pilot signals. During exploration, we allow the selection of multi-beams where concurrent transmission happens on all the beams selected and available power is distributed equally among all the beams. We show that the probability of misidentifying the optimal beam after using <i>n</i><sub>B</sub> pilots decays exponentially fast as <i>O</i>(log<sub>2</sub><i>K</i> exp{−<i>n</i><sub>B</sub><i>A</i>/log<sub>2</sub><i>K</i>}), where <i>K</i> is the number of beams, and <i>A</i> is a problem-dependent constant. Our error bound demonstrates that by employing the multi-beam transmission strategy for exploration, the error probability of MBT attains a better bound compared to the case where only a single beam is selected at each time slot. In particular, we achieve a factor <i>K</i> improvement in the error exponent. Extensive simulations and comparisons demonstrate the superior performance of our MBT algorithm. More specifically, MBT can enhance the average throughput by over 15% compared to state-of-the-art algorithms within 150 pilot symbols for 64 beams."},
+ {t:"conference",y:2025,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"Fixed Budget Bayesian Best Arm Identification in Unimodal Bandits",
+  ven:"2025 17th International Conference on COMmunication Systems and NETworks (COMSNETS)",short:"COMSNETS 2025",det:"pp. 748–756. IEEE",
+  url:"https://ieeexplore.ieee.org/abstract/document/10885731",d:[1],s:"bandit",
+  ab:"In high-speed vehicular communications, e.g., a high-speed train system, the beam between the base station and user is frequently misaligned, resulting in a huge amount of associated overheads. As a result, beam alignment is often challenging. This paper presents a new approach to beam alignment in millimeter wave high-speed train systems. The core idea of our approach is using Bayesian multi-armed bandit (MAB) in the beam search process, where we refer to the beams as arms. Furthermore, there exists an unimodal structure of the mean received signal strength (referred to as mean rewards) over the available beams (or arms). To this end, we develop an algorithm named Bayesian-Best Arm with Unimodality (B-BAU) that identifies the best arm with high confidence within a fixed-budget by exploiting the unimodal structure of the mean rewards over the arms. In the proposed method, by approximating the signal on each beam direction as a Gaussian random variable, for the Gaussian rewards with a Gaussian prior, we show that the expected probability that B-BAU misidentifies the optimal arm is upper bounded as <i>O</i>(1/√<i>T</i>), where <i>T</i> is the budget. We then develop an algorithm for its frequentist counterpart named F-BAU. We demonstrate that F-BAU and B-BAU outperform the state-of-the-art algorithms through extensive simulations. While F-BAU is parameter-free, B-BAU performs better with the prior information."},
+ {t:"conference",y:2024,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"HoloBeam: Learning Optimal Beamforming in Far-Field Holographic Metasurface Transceivers",
+  ven:"IEEE INFOCOM 2024",short:"INFOCOM 2024",det:"pp. 301–310. IEEE",
+  url:"https://ieeexplore.ieee.org/abstract/document/10621175",d:[2],s:"beam",
+  ab:"Holographic Metasurface Transceivers (HMTs) are emerging as cost-effective substitutes to large antenna arrays for beamforming in Millimeter and TeraHertz wave communication. However, to achieve desired channel gains through beamforming in HMT, phase-shifts of a large number of elements need to be appropriately set, which is challenging. Also, these optimal phase-shifts depend on the location of the receivers, which could be unknown. In this work, we develop a learning algorithm using a fixed-budget multi-armed bandit framework to beamform and maximize received signal strength at the receiver for far-field regions. Our algorithm, named Holographic Beam (HoloBeam) exploits the parametric form of channel gains of the beams, which can be expressed in terms of two phase-shifting parameters. Even after parameterization, the problem is still challenging as phase-shifting parameters take continuous values. To overcome this, HoloBeam works with the discrete values of phase-shifting parameters and exploits their unimodal relations with channel gains to learn the optimal values faster. We upper bound the probability of HoloBeam incorrectly identifying the (discrete) optimal phase-shift parameters in terms of the number of pilots used in learning. We show that this probability decays exponentially with the number of pilot signals. We demonstrate that HoloBeam outperforms state-of-the-art algorithms through extensive simulations."},
+ {t:"conference",y:2023,au:["Ghosh, D.","Hanawal, M.K."],ti:"Fixed Budget Beam Identification in Millimeter Wave Systems via Unimodal Bandits",
+  ven:"2023 15th International Conference on COMmunication Systems & NETworkS (COMSNETS)",short:"COMSNETS 2023",det:"pp. 486–488. IEEE",
+  url:"https://ieeexplore.ieee.org/abstract/document/10041362",d:[2],s:"beam",award:"Best Graduate Forum Presentation, Runner Up",
+  ab:"The millimeter-wave communication systems suffer from significant attenuation loss due to their small wavelengths, which significantly reduces the data rate from gigabits per second to a few megabits per second in 5G networks. To enable their use in the 5G network, it requires that the transmission energy be focused on sharp pencil beams. As any misalignment between the transmitter and receiver beam pair can reduce the data rate significantly, it is important that they are aligned as much as possible. Recent works of Beam Alignment (BA) propose to adaptively select the beams such that the cumulative reward measured in terms of received signal strength or throughput is maximized that continuously performs exploration and exploitation, and hence can incur significant BA latency, reduction in throughput, or outages. In this paper, we develop an algorithm that exploits the unimodal structure of the received signal strengths of the beams to identify the best beam in a finite time using pure exploration strategies, which are more suitable for wireless network protocol design. Our algorithm, named Unimodal Bandit for Best Beam (UB3), identifies the best beam with a high probability in a few rounds. We demonstrate that it outperforms the state-of-the-art algorithms through extensive simulations. Moreover, our algorithm is simple to implement and has low computational complexity."},
+ {t:"conference",y:2020,au:["Ghosh, D.","Verma, A.","Hanawal, M.K."],ti:"Learning and Fairness in Energy Harvesting: A Maximin Multi-Armed Bandits Approach",
+  ven:"2020 International Conference on Signal Processing and Communications (SPCOM)",short:"SPCOM 2020",det:"pp. 1–5. IEEE",
+  url:"https://ieeexplore.ieee.org/abstract/document/9179533",d:[2],s:"energy",
+  ab:"Recent advances in wireless radio frequency (RF) energy harvesting allows sensor nodes to increase their lifespan by remotely charging their batteries. The amount of energy harvested by the nodes varies depending on their ambient environment, and proximity to the energy source, and lifespan of the sensor network depends on the minimum amount of energy a node can harvest in the network. It is thus important to learn the least amount of energy harvested by nodes so that the source can transmit on a frequency band that maximizes this amount. We model this learning problem as a novel stochastic Maximin Multi-Armed Bandits (Maximin MAB) problem and propose an Upper Confidence Bound (UCB) based algorithm named Maximin UCB. Maximin MAB is a generalization of standard MAB, and Maximin UCB enjoys the same performance guarantee as to the UCB1 algorithm. Our experimental results validate the performance guarantees of the proposed algorithm."},
+ {t:"journal",y:2024,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"Fixed Budget Best Arm Identification in Unimodal Bandits",
+  ven:"Transactions on Machine Learning Research (TMLR)",short:"TMLR",det:"",
+  url:"https://openreview.net/forum?id=epcLNhkoEL",d:[1],s:"bandit",
+  ab:"We consider the best arm identification problem in a fixed budget stochastic multi-armed bandit in which arm means exhibit unimodal structure, i.e., there is only one local maximum. We establish that the probability of misidentifying the optimal arm within a budget of <i>T</i> is lower bounded as <i>O</i>(exp{−<i>T</i>/<i>H̄</i>}), where <i>H̄</i> depends on the sub-optimality gaps of arms in the neighborhood of the optimal arm. In contrast to the lower bound for the unstructured case, the error exponent in this bound does not depend on the number of arms <i>K</i> and is smaller by a factor log <i>K</i>, which captures the gain achievable by exploiting the unimodal structure. We then develop an algorithm named <i>Fixed Budget Best Arm Unimodal Bandits (FB-BAUB)</i> that exploits unimodality to achieve the gain. Specifically, we show that the error probability of FB-BAUB is upper bounded as <i>O</i>(log<sub>2</sub><i>K</i> exp{−<i>T</i>Δ<sup>2</sup>}), where Δ is the gap between the neighboring arms and <i>H̄</i> ≤ 2Δ<sup>−2</sup>. We demonstrate that FB-BAUB outperforms the state-of-the-art algorithms through extensive simulations. Moreover, FB-BAUB is parameter-free and simple to implement."},
+ {t:"journal",y:2024,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"UB3: Fixed Budget Best Beam Identification in mmWave Massive MISO via Pure Exploration Unimodal Bandits",
+  ven:"IEEE Transactions on Wireless Communications",short:"IEEE TWC",det:"doi: 10.1109/TWC.2024.3395129",
+  url:"https://ieeexplore.ieee.org/document/10522597",d:[2],s:"beam",
+  ab:"One of the core problems in millimeter wave (mmWave) massive multiple-input-single-output (MISO) communication systems, which significantly affects the data rate, is the misalignment of the beam direction of the transmitter towards the receiver. In this paper, we investigate strategies that identify the best beam within a fixed duration of time. To this end, we develop an algorithm, named Unimodal Bandit for Best Beam (UB3), that exploits the unimodal structure of the mean received signal strength as a function of the available beams and identifies the best beam within a fixed time duration using pure exploration strategies. We derive an upper bound on the probability of misidentifying the best beam, and we prove that the upper bound is of the order <i>O</i>(log<sub>2</sub><i>K</i> exp{−α<i>n</i><i>A</i>}), where <i>K</i> is the number of beams, <i>A</i> is a problem-dependent constant, and α<i>n</i> is the number of pilots used in the channel estimation phase. In contrast, when the unimodal structure is not exploited, the error probability is of order <i>O</i>(log<sub>2</sub><i>K</i> exp{−α<i>n</i><i>A</i>/(<i>K</i> log <i>K</i>)}). Thus, by exploiting the unimodal structure, we achieve a much better error probability, which depends only logarithmically on <i>K</i>. We demonstrate that UB3 outperforms the state-of-the-art algorithms through extensive simulations."},
+ {t:"journal",y:2023,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"Learning Optimal Phase-Shifts of Holographic Metasurface Transceivers",
+  ven:"IEEE Transactions on Wireless Communications",short:"IEEE TWC",det:"",
+  url:"https://ieeexplore.ieee.org/abstract/document/10309957",d:[2],s:"beam",
+  ab:"Holographic metasurface transceivers (HMT) are an emerging technology for enhancing the coverage and rate of wireless communication systems. However, acquiring accurate channel state information in HMT-assisted wireless communication systems is critical for achieving these goals. In this paper, we propose an algorithm for learning the optimal phase-shifts at an HMT for the far-field channel model. Our proposed algorithm exploits the structure of the channel gains in the far-field regions and learns the optimal phase-shifts in the presence of noise in the received signals. We prove that the probability that the optimal phase-shifts estimated by our proposed algorithm deviate from the true values decays exponentially in the number of pilot signals. Extensive numerical simulations validate the theoretical guarantees and also demonstrate significant gains as compared to the state-of-the-art policies."},
+ {t:"journal",y:2021,au:["Ghosh, D.","Hanawal, M.K.","Zlatanov, N."],ti:"Learning to Optimize Energy Efficiency in Energy Harvesting Wireless Sensor Networks",
+  ven:"IEEE Wireless Communications Letters",short:"IEEE WCL",det:"10(6), 1153–1157",
+  url:"https://ieeexplore.ieee.org/abstract/document/9351543",d:[2],s:"energy",
+  ab:"We study wireless power transmission by an energy source to multiple energy harvesting nodes with the aim to maximize the energy efficiency. The source transmits energy to the nodes using one of the available power levels in each time slot and the nodes transmit information back to the energy source using the harvested energy. The source does not have any channel state information and it only knows whether a received codeword from a given node was successfully decoded or not. With this limited information, the source has to learn the optimal power level that maximizes the energy efficiency of the network. We model the problem as a stochastic Multi-Armed Bandits problem and develop an Upper Confidence Bound based algorithm, which learns the optimal transmit power of the energy source that maximizes the energy efficiency. Numerical results validate the performance guarantees of the proposed algorithm and show significant gains compared to the benchmark schemes."}
+];
+const PRIZES=[
+ {y:"2026",h:"Naik and Rastogi Award for Excellence in PhD Research",k:"Best PhD Thesis Award of IIT Bombay"},
+ {y:"2025",h:"Coromandel International Best PhD Thesis Award",k:"Best PhD Thesis of the IITB-Monash Research Academy, IIT Bombay"}
+];
+const AWARDS=[
+ ["2024","INFOCOM Conference Travel Grant","From the INFOCOM association and IEEE Communications Society, for a first-author main-conference paper."],
+ ["2023","Best Graduate Forum Presentation, Runner Up","COMSNETS 2023, for “Fixed Budget Beam Identification in Millimeter Wave Systems via Unimodal Bandits”."],
+ ["2023","COMSNETS Association and LRN Foundation Travel Grant","For a first-author paper in the COMSNETS main conference."],
+ ["2023","Monash University Fellowship","Research training fellowship, Dept. of Electrical & Computer Systems Engineering, Apr – Aug 2023."],
+ ["2020","LinkedIn and Microsoft Travel Grant","To attend the FATE-ML workshop at IISc Bengaluru."],
+ ["2019","IIT Bombay Fellowship","University research training fellowship, Dept. of IEOR, Jul 2019 – Jul 2025."],
+ ["2014","UGC State Eligibility Test for Lectureship, Rank 1","Qualified for college and university lecturer posts in Mathematical Science."]
+];
+const TALKS=[
+ ["ICML 2026","Online Robust Reinforcement Learning with General Function Approximation",""],
+ ["ICLR 2026","Sample-Efficient Distributionally Robust Multi-Agent RL via Online Interaction",""],
+ ["AAAI 2026","ORVIT: Near-Optimal Online Distributionally Robust Reinforcement Learning",""],
+ ["COMSNETS 2026","MBT: Multi-Beam Strategy for Best Transmit Beamforming in mmWave Communications","Bengaluru, India"],
+ ["INFOCOM 2024","HoloBeam: Learning Optimal Beamforming in Far-Field Holographic Metasurface Transceivers","Vancouver, Canada"],
+ ["COMSNETS 2023","Fixed Budget Beam Identification in Millimeter Wave Systems via Unimodal Bandits","Bengaluru, India"],
+ ["SPCOM 2020","Learning and Fairness in Energy Harvesting: A Maximin Multi-Armed Bandits Approach","Bengaluru, India"]
+];
+const WS=[
+ ["Jan 2020","Fairness, Accountability, Transparency and Ethics in Machine Learning (FATE-ML)","LinkedIn, Microsoft and IISc, Bengaluru, India"],
+ ["Mar 2019","Data Analytics","Interdisciplinary Statistical Research Institute, ISI Kolkata, India"],
+ ["Jun 2017","Analysis of Data Using R Through Examples","Bureau of Applied Economics & Statistics, West Bengal, India"]
+];
+
+/* ---------- helpers ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){const t=$("#toast");t.textContent=m;t.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>t.classList.remove("show"),1800)}
+async function copy(text,ok){
+  try{await navigator.clipboard.writeText(text);toast(ok)}
+  catch(e){const ta=document.createElement("textarea");ta.value=text;ta.style.cssText="position:fixed;opacity:0";document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");toast(ok)}catch(_){toast("Select the text and copy it")}ta.remove()}
+}
+const joinAu=l=>l.length===1?l[0]:l.slice(0,-1).join(", ")+" and "+l[l.length-1];
+const citation=p=>`${joinAu(p.au)} (${p.y}). ${p.ti}. ${p.ven}${p.det?", "+p.det:""}.`;
+const cvar=d=>`var(--c${DIRS[d].c})`;
+$$("[data-copy-mail]").forEach(b=>b.addEventListener("click",()=>copy("debamita.ghosh@ucf.edu","Email copied")));
+$$("[data-copy]").forEach(b=>b.addEventListener("click",()=>copy(b.dataset.copy,"Email copied")));
+$("#yr").textContent=new Date().getFullYear();
+
+/* ---------- facts ---------- */
+(function(){
+  const conf=PUBS.filter(p=>p.t==="conference").length, jour=PUBS.length-conf;
+  const facts=[
+    [PUBS.length,`publications: ${conf} conference, ${jour} journal`],
+    [PRIZES.length,"Best PhD Thesis awards"]
+  ];
+  $("#facts").innerHTML=facts.map(([n,l])=>`<div class="fact"><b>${n}</b><span>${esc(l)}</span></div>`).join("");
+})();
+
+/* ---------- research: two sectors, each split into sub-themes ---------- */
+const ARM_IDS=Object.keys(DIRS).map(Number);
+function renderSectors(){
+  $("#sectors").innerHTML=ARM_IDS.map(d=>{
+    const S=DIRS[d],mine=PUBS.filter(p=>p.d.includes(d));
+    return `<article class="sector" style="--c:${cvar(d)}">
+      <span class="k">Research interest ${d} · ${mine.length} papers</span>
+      <h3>${esc(S.name)}</h3>
+      <p class="blurb">${esc(S.blurb)}</p>
+      ${S.subs.map(sub=>{
+        const list=mine.filter(p=>p.s===sub.k).sort((a,b)=>b.y-a.y);
+        return `<div class="theme"><h4>${esc(sub.name)}<span>${list.length}</span></h4><p>${esc(sub.blurb)}</p>
+          <ol>${list.map(p=>`<li><span class="v">${esc(/\d{4}/.test(p.short)?p.short:p.short+" "+p.y)}</span><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.ti)}</a></li>`).join("")}</ol></div>`;
+      }).join("")}
+      <button class="all" type="button" data-go="${d}">See these in Publications →</button>
+    </article>`;
+  }).join("");
+}
+$("#sectors").addEventListener("click",e=>{
+  const b=e.target.closest("[data-go]");if(!b)return;
+  state.dir=b.dataset.go;syncFilters();renderLedger();location.hash="publications";
+});
+
+/* ---------- publications ledger ---------- */
+const state={type:"all",dir:"all"};
+const openAbs=new Set();
+function matches(p){
+  if(state.type!=="all"&&p.t!==state.type)return false;
+  if(state.dir!=="all"&&!p.d.includes(+state.dir))return false;
+  return true;
+}
+function renderLedger(){
+  const rows=PUBS.map((p,i)=>({p,i})).filter(({p})=>matches(p));
+  $("#count").textContent=`${rows.length} of ${PUBS.length} papers`;
+  const box=$("#ledger");
+  if(!rows.length){box.innerHTML=`<p class="empty">No papers match. Choose All to see every paper.</p>`;return}
+  const years=[...new Set(rows.map(r=>r.p.y))].sort((a,b)=>b-a);
+  box.innerHTML=years.map(y=>{
+    const ys=rows.filter(r=>r.p.y===y).sort((a,b)=>(a.p.t===b.p.t?0:a.p.t==="conference"?-1:1)||a.i-b.i);
+    return `<div class="yr-row"><div class="yr">${y}<small>${ys.length} paper${ys.length>1?"s":""}</small></div><div>${ys.map(({p,i})=>{
+      const open=openAbs.has(i);
+      const au=joinAu(p.au.map(a=>a===ME?`<b>${esc(a)}</b>`:esc(a)));
+      return `<article class="entry" data-i="${i}">
+        <span class="bar" style="--a:${cvar(p.d[0])};${p.d[1]?`--b:${cvar(p.d[1])}`:""}" title="${esc(p.d.map(d=>DIRS[d].name).join(" + "))}"></span>
+        <div style="min-width:0">
+          <div class="v"><b>${esc(p.short)}</b> · ${p.t==="journal"?"Journal":"Conference"}</div>
+          <h3><a href="${esc(p.url)}" target="_blank" rel="noopener">${esc(p.ti)}</a></h3>
+          <div class="au">${au}</div>
+          ${p.award?`<span class="award">${esc(p.award)}</span>`:""}
+          <div class="acts">
+            <a class="act" href="${esc(p.url)}" target="_blank" rel="noopener">Read paper ↗</a>
+            ${p.ab?`<button class="act" type="button" data-act="abs" aria-expanded="${open}">${open?"Hide abstract":"Abstract"}</button>`:""}
+            <button class="act" type="button" data-act="cite">Copy citation</button>
+          </div>
+          ${p.ab?`<div class="abs" ${open?"":"hidden"}>${p.ab}</div>`:""}
+        </div></article>`;
+    }).join("")}</div></div>`;
+  }).join("");
+}
+$("#ledger").addEventListener("click",e=>{
+  const b=e.target.closest("[data-act]");if(!b)return;
+  const art=b.closest(".entry"),i=+art.dataset.i;
+  if(b.dataset.act==="cite")return copy(citation(PUBS[i]),"Citation copied");
+  const s=$(".abs",art);s.hidden=!s.hidden;s.hidden?openAbs.delete(i):openAbs.add(i);
+  b.setAttribute("aria-expanded",!s.hidden);b.textContent=s.hidden?"Abstract":"Hide abstract";
+});
+function syncFilters(){
+  $$("#typeSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===state.type));
+  $$("#dirFilter .dotf").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===String(state.dir)));
+}
+$("#dirFilter").innerHTML=`<button class="dotf" type="button" data-v="all" aria-pressed="true"><i></i>All interests</button>`+
+  ARM_IDS.map(d=>`<button class="dotf" type="button" data-d="${d}" data-v="${d}" aria-pressed="false"><i></i>${esc(DIRS[d].short)}</button>`).join("");
+$("#typeSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;state.type=b.dataset.v;syncFilters();renderLedger()});
+$("#dirFilter").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;state.dir=b.dataset.v;syncFilters();renderLedger()});
+/* ---------- recognition, talks ---------- */
+$("#prizes").innerHTML=PRIZES.map(a=>`<div class="prize"><div class="y">${a.y} · ${esc(a.k)}</div><h3>${esc(a.h)}</h3></div>`).join("");
+$("#awardList").innerHTML=AWARDS.map(([y,h,p])=>`<li><span class="y">${y}</span><span><b>${esc(h)}</b><small>${esc(p)}</small></span></li>`).join("");
+$("#talkList").innerHTML=TALKS.map(([v,t,l])=>`<li><span class="y">${esc(v)}</span><span><em>${esc(t)}</em>${l?`<small>${esc(l)}</small>`:""}</span></li>`).join("");
+$("#wsList").innerHTML=WS.map(([d,t,s])=>`<li><span class="y">${esc(d)}</span><span><em>${esc(t)}</em><small>${esc(s)}</small></span></li>`).join("");
+
+/* ---------- theme ---------- */
+try{const s=localStorage.getItem("theme");if(s)document.documentElement.dataset.theme=s}catch(e){}
+$$("[data-theme-toggle]").forEach(b=>b.addEventListener("click",()=>{
+  const r=document.documentElement;
+  const cur=r.dataset.theme||"light";
+  const next=cur==="dark"?"light":"dark";r.dataset.theme=next;
+  try{localStorage.setItem("theme",next)}catch(e){}
+}));
+
+/* ---------- tabs: one section visible at a time ---------- */
+(function(){
+  const links=$$("#nav a"),ids=links.map(a=>a.getAttribute("href").slice(1));
+  const names=Object.fromEntries(links.map(a=>[a.getAttribute("href").slice(1),a.textContent]));
+  ids.forEach((id,i)=>{
+    const prev=ids[i-1],next=ids[i+1];
+    const p=document.createElement("nav");p.className="pager";p.setAttribute("aria-label","Next and previous section");
+    p.innerHTML=(prev?`<a href="#${prev}"><small>← Previous</small>${esc(names[prev])}</a>`:"")+
+                (next?`<a class="next" href="#${next}"><small>Next →</small>${esc(names[next])}</a>`:"");
+    document.getElementById(id).appendChild(p);
+  });
+  function show(){
+    let id=location.hash.slice(1);if(!ids.includes(id))id="about";
+    ids.forEach(s=>{document.getElementById(s).hidden=s!==id});
+    links.forEach(a=>{
+      if(a.getAttribute("href")==="#"+id){a.setAttribute("aria-current","page");a.scrollIntoView({block:"nearest",inline:"nearest"})}
+      else a.removeAttribute("aria-current");
+    });
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+  addEventListener("hashchange",show);show();
+})();
+
+renderSectors();syncFilters();renderLedger();
+</script>
+
+</body>
+</html>
